@@ -1,0 +1,7 @@
+@using System
+
+@{
+    Response.StatusCode = 204;
+    Response.Headers.Add("Hello-World", "Hello\tWorld");
+    Response.End();
+}
