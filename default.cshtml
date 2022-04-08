@@ -1,0 +1,71 @@
+﻿@using System.Configuration
+@using System.Collections
+@using System.Linq
+@using System.Web.Configuration
+
+<h3 id="httpHeaders">Request URL</h3>
+<ul class="fixed-width">
+<li><strong>url</strong><span> = @Request.Url</span></li>
+</ul>
+
+<h3 id="httpHeaders">HTTP headers</h3>
+<ul class="fixed-width">
+@foreach (string name in Request.Headers.AllKeys.OrderBy(s => s.ToLower()))
+{
+    <li><strong>@name</strong><span> = @Request.Headers[name]</span></li>
+}
+</ul>
+
+<h3 id="appSettings">AppSettings</h3>
+<ul class="fixed-width">
+@foreach (string name in ConfigurationManager.AppSettings.AllKeys.OrderBy(s => s.ToLower()))
+{
+    <li><strong>@name</strong><span> = @ConfigurationManager.AppSettings[name]</span></li>
+}
+</ul>
+
+<h3 id="connectionStrings">Connection Strings</h3>
+<ul class="fixed-width">
+@foreach (ConnectionStringSettings settings in ConfigurationManager.ConnectionStrings.OfType<ConnectionStringSettings>().OrderBy(s => s.Name.ToLower()))
+{
+    <li>
+        <span class="fixed-width">@settings.Name</span>
+        <ul class="fixed-width">
+            <li><strong>ConnectionString</strong><span> = @settings.ConnectionString</span></li>
+            <li><strong>ProviderName</strong><span> = @settings.ProviderName</span></li>
+        </ul>
+    </li>
+}
+</ul>
+
+<h3 id="machineKey">Machine Key</h3>
+<ul class="fixed-width">
+@{
+    MachineKeySection machineKey = (MachineKeySection)ConfigurationManager.GetSection("system.web/machineKey");
+    <li><strong>ValidationKey</strong><span> = @machineKey.ValidationKey</span></li>
+    <li><strong>Validation</strong><span> = @machineKey.Validation</span></li>
+    <li><strong>ValidationAlgorithm</strong><span> = @machineKey.ValidationAlgorithm</span></li>
+    <li><strong>DecryptionKey</strong><span> = @machineKey.DecryptionKey</span></li>
+    <li><strong>Decryption</strong><span> = @machineKey.Decryption</span></li>
+    <li><strong>DataProtectorType</strong><span> = @machineKey.DataProtectorType</span></li>
+    <li><strong>ApplicationName</strong><span> = @machineKey.ApplicationName</span></li>
+    <li><strong>CompatibilityMode</strong><span> = @machineKey.CompatibilityMode</span></li>
+    <li><strong>DataProtectorType</strong><span> = @machineKey.DataProtectorType</span></li>
+}
+</ul>
+
+<h3 id="environments">Environments</h3>
+<ul class="fixed-width">
+@foreach (System.Collections.DictionaryEntry pair in System.Environment.GetEnvironmentVariables().OfType<System.Collections.DictionaryEntry>().OrderBy(p => p.Key.ToString().ToLower()))
+{
+    <li><strong>@pair.Key</strong><span> = @pair.Value</span></li>
+}
+</ul>
+
+<h3 id="serverVar">Server variables</h3>
+<ul class="fixed-width">
+@foreach (string name in Request.ServerVariables.OfType<string>().OrderBy(s => s.ToLower()))
+{
+    <li><strong>@name</strong><span> = @Request.ServerVariables[name]</span></li>
+}
+</ul>
